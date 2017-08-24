@@ -18,6 +18,44 @@ void ATankPlayerController::BeginPlay()
 	}
 }
 
+void ATankPlayerController::Tick(float DeltaTime)
+{
+	Super::Tick(DeltaTime);
+	AimTowardCrosshair();
+}
+
+void ATankPlayerController::AimTowardCrosshair()
+{
+	if (!GetControlledTank()) { return; }
+	FVector Hitlocation;
+	if (GetSightRayHitLocation(Hitlocation))
+	{
+		UE_LOG(LogTemp, Warning, TEXT("%s"), *(Hitlocation.ToString()));
+	}
+	
+}
+
+bool ATankPlayerController::GetSightRayHitLocation(FVector & OUTHitLocation) const
+{
+	FRotator Rotation;
+	FVector Position;
+
+	GetControlledTank()->GetActorEyesViewPoint(Position, Rotation);
+
+	FVector Target = Position + Rotation.Vector()*10000.0f;
+
+	FHitResult Hit;
+	bool result = GetWorld()->LineTraceSingleByObjectType(
+		Hit,
+		Position,
+		Target,
+		FCollisionObjectQueryParams(ECollisionChannel::ECC_PhysicsBody),
+		FCollisionQueryParams(FName(TEXT("")), true, this)
+	);
+	OUTHitLocation = Hit.ImpactPoint;
+	return true;
+}
+
 ATank* ATankPlayerController::GetControlledTank() const 
 {
 	return Cast<ATank>(GetPawn());

@@ -7,6 +7,7 @@
 #include "Tank.h"
 #include "GameFramework/Pawn.h"
 #include "GameFramework/Controller.h"
+#include "Engine/World.h"
 #include "TankPlayerController.generated.h"
 
 /**
@@ -20,5 +21,7 @@ class BATTLETANK_API ATankPlayerController : public APlayerController
 public:
 	ATank* GetControlledTank() const;
 	virtual void BeginPlay() override;
-	
+	virtual void Tick(float DeltaTime) override;
+	void AimTowardCrosshair();
+	bool GetSightRayHitLocation(FVector &OUTHitLocation)const;
 };

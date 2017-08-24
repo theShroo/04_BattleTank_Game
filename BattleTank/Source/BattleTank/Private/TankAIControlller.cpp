@@ -27,6 +27,12 @@ void ATankAIControlller::BeginPlay()
 	}
 }
 
+void ATankAIControlller::Tick(float DeltaTime)
+{
+	Super::Tick(DeltaTime);
+
+}
+
 ATank* ATankAIControlller::GetControlledTank() const
 {
 	return Cast<ATank>(GetPawn());
