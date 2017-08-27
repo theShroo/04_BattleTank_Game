@@ -30,30 +30,46 @@ void ATankPlayerController::AimTowardCrosshair()
 	FVector Hitlocation;
 	if (GetSightRayHitLocation(Hitlocation))
 	{
-		UE_LOG(LogTemp, Warning, TEXT("%s"), *(Hitlocation.ToString()));
+		UE_LOG(LogTemp, Warning, TEXT("Raytrace hit at: %s"), *(Hitlocation.ToString()));
 	}
 	
 }
 
 bool ATankPlayerController::GetSightRayHitLocation(FVector & OUTHitLocation) const
 {
-	FRotator Rotation;
-	FVector Position;
 
-	GetControlledTank()->GetActorEyesViewPoint(Position, Rotation);
+	int32 ViewportSizeX, ViewportSizeY;
+	GetViewportSize(ViewportSizeX, ViewportSizeY);
+	FVector2D Screenlocation = FVector2D(ViewportSizeX * CrosshairXPosition, ViewportSizeY * CrosshairYPosition);
 
-	FVector Target = Position + Rotation.Vector()*10000.0f;
+	FVector LookDirection, Position;
+	GetLookDirection(Screenlocation, LookDirection, Position);
 
 	FHitResult Hit;
-	bool result = GetWorld()->LineTraceSingleByObjectType(
+	GetWorld()->LineTraceSingleByChannel(
 		Hit,
-		Position,
-		Target,
-		FCollisionObjectQueryParams(ECollisionChannel::ECC_PhysicsBody),
-		FCollisionQueryParams(FName(TEXT("")), true, this)
+		PlayerCameraManager->GetCameraLocation(),
+		PlayerCameraManager->GetCameraLocation()+(LookDirection*1000000.0f),
+		ECollisionChannel::ECC_Visibility
 	);
-	OUTHitLocation = Hit.ImpactPoint;
-	return true;
+	OUTHitLocation = Hit.Location;
+	if (Hit.Actor != nullptr)
+	{
+		UE_LOG(LogTemp, Log, TEXT("Raytrace hit: %s"), *(Hit.Actor->GetName()));
+		return true;
+	}
+	return false;
+}
+
+bool ATankPlayerController::GetLookDirection(FVector2D ScreenLocation, FVector &LookDirection, FVector& Position) const
+{
+	return DeprojectScreenPositionToWorld
+	(
+		ScreenLocation.X,
+		ScreenLocation.Y,
+		Position,
+		LookDirection
+	);
 }
 
 ATank* ATankPlayerController::GetControlledTank() const 
