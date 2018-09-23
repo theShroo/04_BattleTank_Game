@@ -54,11 +54,13 @@ bool ATankPlayerController::GetSightRayHitLocation(FVector & OUTHitLocation) con
 		ECollisionChannel::ECC_Visibility
 	);
 	OUTHitLocation = Hit.Location;
+	ATank* tank = GetControlledTank();
 	if (Hit.Actor != nullptr)
 	{
-		UE_LOG(LogTemp, Log, TEXT("Raytrace hit: %s"), *(Hit.Actor->GetName()));
+		tank->CurrentTarget = Hit.Actor.Get();
 		return true;
 	}
+	tank->CurrentTarget = nullptr;
 	return false;
 }
 

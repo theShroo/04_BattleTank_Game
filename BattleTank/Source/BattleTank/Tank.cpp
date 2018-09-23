@@ -47,3 +47,13 @@ void ATank::SetTurrettReference(UTankTurret* TurretToSet)
 
 
 }
+
+void ATank::Fire()
+{
+	if (CurrentTarget) {
+		UE_LOG(LogTemp, Warning, TEXT("Aiming at %s. Fire!"), *(CurrentTarget->GetName()));
+	}
+	else {
+		UE_LOG(LogTemp, Warning, TEXT("Fire!"));
+	}
+}

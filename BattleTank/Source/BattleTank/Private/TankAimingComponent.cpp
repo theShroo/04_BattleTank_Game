@@ -24,11 +24,11 @@ UTankAimingComponent::UTankAimingComponent()
 
 void UTankAimingComponent::SetBarrelReference(UTankkBarrel * BarrelToSet)
 {
-	Barrel = BarrelToSet;
+	if(BarrelToSet) Barrel = BarrelToSet;
 }
 
 void UTankAimingComponent::SetTurretReference(UTankTurret* TurretToSet) {
-	Turret = TurretToSet;
+	if(TurretToSet) Turret = TurretToSet;
 }
 
 void UTankAimingComponent::AimAt(FVector target, float LaunchSpeed)
@@ -54,13 +54,6 @@ void UTankAimingComponent::AimAt(FVector target, float LaunchSpeed)
 		MoveBarrel(AimDirection);
 		MoveTurret(AimDirection);
 		float time = GetWorld()->GetTimeSeconds();
-
-		UE_LOG(LogTemp, Warning, TEXT("%s is Aiming at: %s, from: %s"), *(GetOwner()->GetName()), *(target.ToString()), *(Barrel->GetComponentLocation().ToString()));
-	}
-	else
-	{
-		UE_LOG(LogTemp, Warning, TEXT("No aim solution"));
-
 	}
 }
 
@@ -69,7 +62,7 @@ void UTankAimingComponent::MoveBarrel(FVector AimDirection)
 	FRotator CurrentDirection = Barrel->GetForwardVector().Rotation();
 	FRotator AimDirectionRotator = AimDirection.Rotation();
 	FRotator DeltaRotator = AimDirectionRotator - CurrentDirection;
-
+	// TODO fix rotation around 0.
 	Barrel->Elevate(DeltaRotator.Pitch);
 
 

@@ -7,7 +7,6 @@
 void ATankAIControlller::BeginPlay()
 {
 	Super::BeginPlay();
-	UE_LOG(LogTemp, Warning, TEXT("AI Controller Begin Play"));
 	ATank* Self = GetControlledTank();
 	if (Self) {
 		UE_LOG(LogTemp, Warning, TEXT("AI Controller on %s"), *(Self->GetName()));

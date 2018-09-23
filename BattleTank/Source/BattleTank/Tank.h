@@ -4,6 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/Pawn.h"
+#include "GameFramework/Actor.h"
 #include "TankAimingComponent.h"
 #include "Tank.generated.h"
 
@@ -24,12 +25,12 @@ protected:
 public:	
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
-
+	AActor* CurrentTarget = nullptr;
 	// Called to bind functionality to input
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 	UFUNCTION(BlueprintCallable, Category = Setup) void SetBarrelReference(UTankkBarrel* BarrelToSet);
 	UFUNCTION(BlueprintCallable, Category = Setup) void SetTurrettReference(UTankTurret* TurretToSet);
-
-	UPROPERTY(EditAnywhere, Category = Firing) float LaunchSpeed = 100000; //TODO find sensible default
+	UFUNCTION(BlueprintCallable, Category = Setup) void Fire();
 	void AimAt(FVector TargetLocation);
+	UPROPERTY(EditAnywhere, Category = Firing) float LaunchSpeed = 4000; 
 };
