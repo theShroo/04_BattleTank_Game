@@ -8,6 +8,9 @@
 #include "TankAimingComponent.h"
 #include "Tank.generated.h"
 
+class AProjectile;
+class UTankkBarrel;
+
 UCLASS()
 class BATTLETANK_API ATank : public APawn
 {
@@ -32,5 +35,9 @@ public:
 	UFUNCTION(BlueprintCallable, Category = Setup) void SetTurrettReference(UTankTurret* TurretToSet);
 	UFUNCTION(BlueprintCallable, Category = Setup) void Fire();
 	void AimAt(FVector TargetLocation);
-	UPROPERTY(EditAnywhere, Category = Firing) float LaunchSpeed = 4000; 
+	UPROPERTY(EditDefaultsOnly, Category = Firing) float LaunchSpeed = 4000; 
+	UPROPERTY(EditDefaultsOnly, Category = Setup) TSubclassOf<AProjectile> ProjectileBlueprint = nullptr;
+	UTankkBarrel* Barrel = nullptr; // local barrel reference
+	UPROPERTY(EditDefaultsOnly, Category = Firing)float ReloadTime = 3.0f;
+	double lastfiretime = 0;
 };

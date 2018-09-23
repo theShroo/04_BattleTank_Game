@@ -30,6 +30,6 @@ public:
 	bool GetLookDirection(FVector2D ScreenLocation, FVector &LookDirection, FVector& Position) const;
 
 private:
-	UPROPERTY(EditAnywhere)float CrosshairXPosition = 0.5f;
-	UPROPERTY(EditAnywhere)float CrosshairYPosition = 1/3.0f;
+	UPROPERTY(EditDefaultsOnly)float CrosshairXPosition = 0.5f;
+	UPROPERTY(EditDefaultsOnly)float CrosshairYPosition = 1/3.0f;
 };

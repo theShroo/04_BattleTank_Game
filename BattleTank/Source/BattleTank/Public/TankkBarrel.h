@@ -18,8 +18,8 @@ public:
 	void Elevate(float RelativeSpeed);
 
 
-	UPROPERTY(EditAnywhere, Category = Firing) float MaxDegreesPerSecond = 10;
-	UPROPERTY(EditAnywhere, Category = Firing) float MaxElevation = 40;
-	UPROPERTY(EditAnywhere, Category = Firing) float MinElevation = 0;
+	UPROPERTY(EditDefaultsOnly, Category = Firing) float MaxDegreesPerSecond = 10;
+	UPROPERTY(EditDefaultsOnly, Category = Firing) float MaxElevation = 40;
+	UPROPERTY(EditDefaultsOnly, Category = Firing) float MinElevation = 0;
 
 };
